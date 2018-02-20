@@ -1,0 +1,6 @@
+DevExpress.DashboardCommon.Dashboard, DevExpress.Dashboard.v17.2.Core, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.XtraLayout.LayoutControl, DevExpress.XtraLayout.v17.2, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.DashboardWin.DashboardDesigner, DevExpress.Dashboard.v17.2.Win, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.DashboardWin.DashboardViewer, DevExpress.Dashboard.v17.2.Win, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.XtraGauges.Win.GaugeControl, DevExpress.XtraGauges.v17.2.Win, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a
+DevExpress.XtraCharts.ChartControl, DevExpress.XtraCharts.v17.2.UI, Version=17.2.2.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a

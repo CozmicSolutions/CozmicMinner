@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CozmicMiningModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="MiningServers">
+          <Key>
+            <PropertyRef Name="ServerID" />
+          </Key>
+          <Property Name="ServerID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegionID" Type="uniqueidentifier" />
+          <Property Name="MinerID" Type="uniqueidentifier" />
+          <Property Name="ServerName" Type="nvarchar" MaxLength="250" />
+          <Property Name="ServerDescription" Type="nvarchar(max)" />
+          <Property Name="ServerPort" Type="int" />
+          <Property Name="ServerAddress" Type="nvarchar" MaxLength="300" />
+          <Property Name="ServerStatus" Type="int" />
+          <Property Name="ServerCreateDate" Type="datetime" />
+          <Property Name="ServerLastUpdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ServerMinerTypes">
+          <Key>
+            <PropertyRef Name="MinerID" />
+          </Key>
+          <Property Name="MinerID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="MinerName" Type="nvarchar(max)" />
+          <Property Name="MinerDescription" Type="nvarchar(max)" />
+          <Property Name="MinerStatus" Type="int" />
+          <Property Name="MinerCreateDate" Type="datetime" />
+          <Property Name="MinerLastUpdate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ServerRegions">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="RegionName" Type="nvarchar(max)" />
+          <Property Name="RegionDescription" Type="nvarchar(max)" />
+          <Property Name="RegionStatus" Type="int" />
+          <Property Name="RegionCreateDate" Type="datetime" />
+          <Property Name="RegionLastUpdate" Type="datetime" />
+        </EntityType>
+        <Association Name="FK_MiningServers_ServerMinerTypes">
+          <End Role="ServerMinerTypes" Type="Self.ServerMinerTypes" Multiplicity="0..1" />
+          <End Role="MiningServers" Type="Self.MiningServers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServerMinerTypes">
+              <PropertyRef Name="MinerID" />
+            </Principal>
+            <Dependent Role="MiningServers">
+              <PropertyRef Name="MinerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MiningServers_ServerRegions">
+          <End Role="ServerRegions" Type="Self.ServerRegions" Multiplicity="0..1" />
+          <End Role="MiningServers" Type="Self.MiningServers" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServerRegions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="MiningServers">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CozmicMiningModelStoreContainer">
+          <EntitySet Name="MiningServers" EntityType="Self.MiningServers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServerMinerTypes" EntityType="Self.ServerMinerTypes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ServerRegions" EntityType="Self.ServerRegions" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_MiningServers_ServerMinerTypes" Association="Self.FK_MiningServers_ServerMinerTypes">
+            <End Role="ServerMinerTypes" EntitySet="ServerMinerTypes" />
+            <End Role="MiningServers" EntitySet="MiningServers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MiningServers_ServerRegions" Association="Self.FK_MiningServers_ServerRegions">
+            <End Role="ServerRegions" EntitySet="ServerRegions" />
+            <End Role="MiningServers" EntitySet="MiningServers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CozmicMiningModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="MiningServer">
+          <Key>
+            <PropertyRef Name="ServerID" />
+          </Key>
+          <Property Name="ServerID" Type="Guid" Nullable="false" />
+          <Property Name="RegionID" Type="Guid" />
+          <Property Name="MinerID" Type="Guid" />
+          <Property Name="ServerName" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="ServerDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ServerPort" Type="Int32" />
+          <Property Name="ServerAddress" Type="String" MaxLength="300" FixedLength="false" Unicode="true" />
+          <Property Name="ServerStatus" Type="Int32" />
+          <Property Name="ServerCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="ServerLastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="ServerMinerType" Relationship="Self.FK_MiningServers_ServerMinerTypes" FromRole="MiningServers" ToRole="ServerMinerTypes" />
+          <NavigationProperty Name="ServerRegion" Relationship="Self.FK_MiningServers_ServerRegions" FromRole="MiningServers" ToRole="ServerRegions" />
+        </EntityType>
+        <EntityType Name="ServerMinerType">
+          <Key>
+            <PropertyRef Name="MinerID" />
+          </Key>
+          <Property Name="MinerID" Type="Guid" Nullable="false" />
+          <Property Name="MinerName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MinerDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="MinerStatus" Type="Int32" />
+          <Property Name="MinerCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="MinerLastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MiningServers" Relationship="Self.FK_MiningServers_ServerMinerTypes" FromRole="ServerMinerTypes" ToRole="MiningServers" />
+        </EntityType>
+        <EntityType Name="ServerRegion">
+          <Key>
+            <PropertyRef Name="RegionID" />
+          </Key>
+          <Property Name="RegionID" Type="Guid" Nullable="false" />
+          <Property Name="RegionName" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RegionDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="RegionStatus" Type="Int32" />
+          <Property Name="RegionCreateDate" Type="DateTime" Precision="3" />
+          <Property Name="RegionLastUpdate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="MiningServers" Relationship="Self.FK_MiningServers_ServerRegions" FromRole="ServerRegions" ToRole="MiningServers" />
+        </EntityType>
+        <Association Name="FK_MiningServers_ServerMinerTypes">
+          <End Role="ServerMinerTypes" Type="Self.ServerMinerType" Multiplicity="0..1" />
+          <End Role="MiningServers" Type="Self.MiningServer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServerMinerTypes">
+              <PropertyRef Name="MinerID" />
+            </Principal>
+            <Dependent Role="MiningServers">
+              <PropertyRef Name="MinerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MiningServers_ServerRegions">
+          <End Role="ServerRegions" Type="Self.ServerRegion" Multiplicity="0..1" />
+          <End Role="MiningServers" Type="Self.MiningServer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ServerRegions">
+              <PropertyRef Name="RegionID" />
+            </Principal>
+            <Dependent Role="MiningServers">
+              <PropertyRef Name="RegionID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CozmicMiningEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="MiningServers" EntityType="Self.MiningServer" />
+          <EntitySet Name="ServerMinerTypes" EntityType="Self.ServerMinerType" />
+          <EntitySet Name="ServerRegions" EntityType="Self.ServerRegion" />
+          <AssociationSet Name="FK_MiningServers_ServerMinerTypes" Association="Self.FK_MiningServers_ServerMinerTypes">
+            <End Role="ServerMinerTypes" EntitySet="ServerMinerTypes" />
+            <End Role="MiningServers" EntitySet="MiningServers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MiningServers_ServerRegions" Association="Self.FK_MiningServers_ServerRegions">
+            <End Role="ServerRegions" EntitySet="ServerRegions" />
+            <End Role="MiningServers" EntitySet="MiningServers" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CozmicMiningModelStoreContainer" CdmEntityContainer="CozmicMiningEntities">
+          <EntitySetMapping Name="MiningServers">
+            <EntityTypeMapping TypeName="CozmicMiningModel.MiningServer">
+              <MappingFragment StoreEntitySet="MiningServers">
+                <ScalarProperty Name="ServerID" ColumnName="ServerID" />
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="MinerID" ColumnName="MinerID" />
+                <ScalarProperty Name="ServerName" ColumnName="ServerName" />
+                <ScalarProperty Name="ServerDescription" ColumnName="ServerDescription" />
+                <ScalarProperty Name="ServerPort" ColumnName="ServerPort" />
+                <ScalarProperty Name="ServerAddress" ColumnName="ServerAddress" />
+                <ScalarProperty Name="ServerStatus" ColumnName="ServerStatus" />
+                <ScalarProperty Name="ServerCreateDate" ColumnName="ServerCreateDate" />
+                <ScalarProperty Name="ServerLastUpdate" ColumnName="ServerLastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServerMinerTypes">
+            <EntityTypeMapping TypeName="CozmicMiningModel.ServerMinerType">
+              <MappingFragment StoreEntitySet="ServerMinerTypes">
+                <ScalarProperty Name="MinerID" ColumnName="MinerID" />
+                <ScalarProperty Name="MinerName" ColumnName="MinerName" />
+                <ScalarProperty Name="MinerDescription" ColumnName="MinerDescription" />
+                <ScalarProperty Name="MinerStatus" ColumnName="MinerStatus" />
+                <ScalarProperty Name="MinerCreateDate" ColumnName="MinerCreateDate" />
+                <ScalarProperty Name="MinerLastUpdate" ColumnName="MinerLastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ServerRegions">
+            <EntityTypeMapping TypeName="CozmicMiningModel.ServerRegion">
+              <MappingFragment StoreEntitySet="ServerRegions">
+                <ScalarProperty Name="RegionID" ColumnName="RegionID" />
+                <ScalarProperty Name="RegionName" ColumnName="RegionName" />
+                <ScalarProperty Name="RegionDescription" ColumnName="RegionDescription" />
+                <ScalarProperty Name="RegionStatus" ColumnName="RegionStatus" />
+                <ScalarProperty Name="RegionCreateDate" ColumnName="RegionCreateDate" />
+                <ScalarProperty Name="RegionLastUpdate" ColumnName="RegionLastUpdate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
